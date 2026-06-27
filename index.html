@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mateus Pinheiro - Product, Engineer and Tech</title>
+<link rel="icon" type="image/png" href="sun.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..700;1,400..600&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<style>
+:root{
+  --on:        #f0d9aa;
+  --on-soft:   #e4c898;
+  --on-mute:   #cba972;
+
+  --terracota: #d06224;
+  --chile:     #ae431e;
+  --olive:     #8a8635;
+  --sunset:    #eac891;
+
+  --accent: var(--olive);
+  --accent-soft: color-mix(in srgb, var(--accent) 22%, transparent);
+  --accent-line: color-mix(in srgb, var(--accent) 50%, transparent);
+
+  --line: rgba(234,200,145,0.20);
+  --line-strong: rgba(234,200,145,0.34);
+
+  --display:'Google Sans','Product Sans','Figtree', system-ui, sans-serif;
+  --body:'Google Sans','Product Sans','Figtree', system-ui, sans-serif;
+  --mono:'Google Sans','Product Sans','Figtree', system-ui, sans-serif;
+
+  --gutter: clamp(24px, 6vw, 92px);
+  --maxw: 1180px;
+}
+body[data-accent="olive"]     { --accent: var(--olive); }
+body[data-accent="terracota"] { --accent: var(--terracota); }
+body[data-accent="sunset"]    { --accent: var(--sunset); }
+body[data-accent="chile"]     { --accent: var(--chile); }
+
+*,*::before,*::after{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0; color:var(--on);
+  font-family:var(--body); font-size:18px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  background:#a8451b;
+}
+body.lang-pt .en{ display:none !important; }
+body.lang-en .pt{ display:none !important; }
+
+/* Sun cursor everywhere — override interactive defaults. */
+*{ cursor:none !important; }
+
+.bg{ position:fixed; inset:0; z-index:-3;
+  background:url("assets/taipa-plaster2.jpg") center/cover no-repeat;
+}
+.scrim{ position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(30,16,8,.50) 0%, rgba(30,16,8,.12) 24%, rgba(30,16,8,.18) 52%, rgba(30,16,8,.72) 86%, rgba(30,16,8,.90) 100%),
+    linear-gradient(95deg, rgba(30,16,8,.70) 0%, rgba(30,16,8,.26) 44%, rgba(30,16,8,0) 70%);
+}
+.grain{ position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.14; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='11'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>");
+}
+body[data-grain="off"] .grain{ display:none; }
+
+.home{
+  min-height:100svh; display:flex; flex-direction:column;
+  max-width:var(--maxw); margin:0 auto; padding:0 var(--gutter);
+}
+.bar{
+  display:flex; align-items:center; justify-content:flex-end; gap:18px;
+  padding:26px 0 0;
+}
+.brand{ font-family:var(--display); font-weight:500; font-size:21px; letter-spacing:-.01em;
+  color:var(--on); text-decoration:none; display:inline-flex; align-items:baseline; gap:10px; }
+.brand .idx{ font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--on-mute); }
+.lang-toggle{ display:inline-flex; border:1px solid var(--line-strong); border-radius:8px; overflow:hidden;
+  font-family:var(--mono); font-size:11px; letter-spacing:.08em; }
+.lang-toggle button{ background:transparent; border:0; color:var(--on-mute); padding:7px 12px;
+  font:inherit; letter-spacing:inherit; transition:color .2s, background .2s; }
+.lang-toggle button.active{ color:#241a10; background:var(--on); }
+
+.center{ flex:1; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; text-align:left; padding:48px 0; }
+.center .eyebrow{ justify-content:flex-start; }
+.center .links{ justify-content:flex-start; }
+.center .statement{ margin-left:0; margin-right:0; }
+.eyebrow{ font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--on-soft);
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin-bottom:30px; }
+.eyebrow .sep{ color:var(--accent); }
+h1{ font-family:var(--display); font-weight:360; font-size:clamp(46px, 9vw, 128px); line-height:.96;
+  letter-spacing:-.03em; margin:24px 0 0; color:var(--on); text-wrap:balance;
+  text-shadow:0 2px 30px rgba(20,14,8,.35); }
+.statement{ font-family:var(--display); font-weight:420; font-size:clamp(28px, 4.6vw, 60px);
+  line-height:1.18; letter-spacing:-.02em; color:var(--on); margin:0; max-width:17ch; text-wrap:pretty; }
+.statement em{ font-style:italic; color:var(--sunset); }
+.statement b{ font-weight:700; color:#fff; }
+
+.links{ display:flex; flex-wrap:wrap; gap:10px; margin-top:42px; }
+.links a{
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--on); text-decoration:none; padding:12px 18px; border-radius:10px;
+  border:1px solid var(--line-strong); background:rgba(28,21,13,.28); backdrop-filter:blur(4px);
+  display:inline-flex; align-items:center; gap:9px;
+  transition:border-color .2s, background .2s, transform .2s, color .2s;
+}
+.links a:hover{ border-color:var(--accent); color:var(--on); background:rgba(28,21,13,.5); transform:translateY(-2px); }
+.links a.primary{ background:var(--accent); color:#1a1208; border-color:transparent; }
+.links a.primary .arr{ transition:transform .2s; }
+.links a.primary:hover{ transform:translateY(-2px); background:var(--accent); }
+.links a.primary:hover .arr{ transform:translateX(4px); }
+.links a .ic{ width:15px; height:15px; opacity:.9; }
+
+.foot{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+  padding:22px 0 26px; border-top:1px solid var(--line);
+  font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--on-mute); }
+.foot .dot{ color:var(--accent); }
+
+@media (max-width:640px){
+  body{ font-size:17px; }
+  .center{ padding:48px 0 28px; }
+  .statement{ max-width:none; }
+  .foot{ flex-direction:column; align-items:flex-start; gap:6px; }
+}
+#tweaks-root{ position:relative; z-index:9999; }
+
+/* ---- Sun cursor + click animation ---- */
+#sun-cursor{
+  position:fixed; top:0; left:0; pointer-events:none; z-index:9999;
+  opacity:0; will-change:transform, opacity;
+  transition:opacity .15s ease-out;
+}
+#sun-cursor.visible{ opacity:1; }
+#sun-img{
+  display:block; width:30px; height:30px;
+  transform:translate(-50%, -50%);
+  will-change:transform;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,.45));
+}
+#sun-img.burst{ animation: sun-burst .45s ease-out; }
+@keyframes sun-burst{
+  0%   { transform: translate(-50%, -50%) scale(1)    rotate(0deg); }
+  45%  { transform: translate(-50%, -50%) scale(1.15) rotate(90deg); }
+  100% { transform: translate(-50%, -50%) scale(1)    rotate(180deg); }
+}
+
+/* Targets receive their shadow inline via JS; smooth small jumps. */
+.shadow-target{ will-change: text-shadow, box-shadow; }
+</style>
+</head>
+
+<body class="lang-pt" data-accent="olive" data-grain="on">
+
+<div class="bg"></div>
+<div class="scrim"></div>
+<div class="grain"></div>
+
+<main class="home">
+  <div class="bar">
+    <div class="lang-toggle shadow-target" id="langToggle">
+      <button data-lang="pt" class="active">PT</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+
+  <section class="center">
+    <div class="eyebrow shadow-target">
+      <span><span class="pt">Engenheiro de software</span><span class="en">Software engineer</span></span>
+      <span class="sep">·</span>
+      <span>Android · Flutter</span>
+      <span class="sep">·</span>
+      <span><span class="pt">Brasil, remoto</span><span class="en">Brazil, remote</span></span>
+    </div>
+
+    <p class="statement shadow-target">
+      <span class="pt">Escrevo software como quem trabalha a <em>madeira</em> — com paciência, atenção ao grão e <b>respeito pelo material</b>.</span>
+      <span class="en">I build software the way one works <em>wood</em> — with patience, attention to the grain and <b>respect for the material</b>.</span>
+    </p>
+
+    <nav class="links">
+      <a class="primary shadow-target" href="Mateus França - Portfolio v2.html">
+        <span class="pt">Trabalho &amp; feitos</span><span class="en">Work &amp; projects</span><span class="arr">→</span>
+      </a>
+      <a class="shadow-target" href="https://github.com/mateus-pinheiro" target="_blank" rel="noopener">
+        <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85l-.01 2.75c0 .27.18.58.69.48A10 10 0 0012 2z"/></svg>GitHub
+      </a>
+      <a class="shadow-target" href="https://www.linkedin.com/in/mateus-pinheiro-15124bb3/" target="_blank" rel="noopener">
+        <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21H17v-5.4c0-1.3 0-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21H10z"/></svg>LinkedIn
+      </a>
+      <a class="shadow-target" href="https://www.twitch.tv/mateusdalove" target="_blank" rel="noopener">
+        <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M4 2L3 6v13h4v3h3l3-3h4l5-5V2zm15 11l-3 3h-4l-3 3v-3H6V4h13zM15 7h-2v5h2zm-5 0H8v5h2z"/></svg>Twitch
+      </a>
+      <a class="shadow-target" href="mailto:mateus.franca.pinheiro@gmail.com">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Email
+      </a>
+    </nav>
+  </section>
+
+  <footer class="foot">
+    <div class="shadow-target"><span class="pt">9+ anos construindo</span><span class="en">9+ years building</span> <span class="dot">/</span> <span class="pt">desde 2016</span><span class="en">since 2016</span></div>
+    <div class="shadow-target">© 2026 Mateus&nbsp;França <span class="dot">/</span> <span class="pt">feito com código &amp; paciência</span><span class="en">made with code &amp; patience</span></div>
+  </footer>
+</main>
+
+<div id="tweaks-root"></div>
+
+<!-- Sun cursor element -->
+<div id="sun-cursor">
+  <img id="sun-img" src="sun.png" alt="">
+</div>
+
+<script>
+  const LK = 'mfhome_lang';
+  function setLang(l){
+    document.body.classList.remove('lang-pt','lang-en');
+    document.body.classList.add('lang-'+l);
+    document.documentElement.lang = (l==='pt')?'pt-BR':'en';
+    document.querySelectorAll('#langToggle button').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+    try{ localStorage.setItem(LK,l); }catch(e){}
+    // Layout may shift when content swaps — recompute shadow target centers.
+    if (window.__recomputeShadowTargets) window.__recomputeShadowTargets();
+  }
+  document.querySelectorAll('#langToggle button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+  try{ setLang(localStorage.getItem(LK)||'pt'); }catch(e){ setLang('pt'); }
+</script>
+
+<script type="text/babel" data-presets="env,react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "olive",
+  "grain": true
+}/*EDITMODE-END*/;
+function App(){
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(()=>{
+    document.body.setAttribute('data-accent', t.accent);
+    document.body.setAttribute('data-grain', t.grain ? 'on':'off');
+  },[t.accent, t.grain]);
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="Cor de acento · accent" />
+      <TweakRadio label="Acento" value={t.accent}
+        options={[
+          { value:'olive',     label:'Olive' },
+          { value:'sunset',    label:'Sunset' },
+          { value:'terracota', label:'Terracota' },
+          { value:'chile',     label:'Chile' },
+        ]}
+        onChange={(v)=>setTweak('accent', v)} />
+      <TweakSection label="Textura · grain" />
+      <TweakToggle label="Granulado / grão" value={t.grain} onChange={(v)=>setTweak('grain', v)} />
+    </TweaksPanel>
+  );
+}
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<App />);
+</script>
+
+<!-- Sun cursor + shadow effect on text and buttons -->
+<script>
+(function(){
+  const sunCursor = document.getElementById('sun-cursor');
+  const sunImg = document.getElementById('sun-img');
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = -window.innerHeight;
+  let hasMouse = false;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!hasMouse) {
+      hasMouse = true;
+      sunCursor.classList.add('visible');
+    }
+  });
+  window.addEventListener('mouseleave', () => {
+    hasMouse = false;
+    sunCursor.classList.remove('visible');
+  });
+  window.addEventListener('mouseenter', () => {
+    if (mouseX >= 0 && mouseY >= 0) {
+      hasMouse = true;
+      sunCursor.classList.add('visible');
+    }
+  });
+
+  window.addEventListener('mousedown', () => {
+    sunImg.classList.remove('burst');
+    void sunImg.offsetWidth;
+    sunImg.classList.add('burst');
+  });
+  sunImg.addEventListener('animationend', () => {
+    sunImg.classList.remove('burst');
+  });
+
+  // Build shadow targets. 'text' = text-shadow only; 'box' = box-shadow only;
+  // 'both' = combined (used on the link buttons).
+  function collectTargets(){
+    const list = [];
+    document.querySelectorAll('.eyebrow.shadow-target, .statement.shadow-target, .foot .shadow-target')
+      .forEach(el => list.push({ el, kind:'text' }));
+    document.querySelectorAll('.links a.shadow-target')
+      .forEach(el => list.push({ el, kind:'both' }));
+    document.querySelectorAll('.lang-toggle.shadow-target')
+      .forEach(el => list.push({ el, kind:'box' }));
+    return list;
+  }
+
+  let targets = collectTargets();
+
+  function recompute(){
+    for (const t of targets) {
+      const r = t.el.getBoundingClientRect();
+      t.cx = r.left + r.width / 2;
+      t.cy = r.top + r.height / 2;
+    }
+  }
+  window.__recomputeShadowTargets = () => { targets = collectTargets(); recompute(); };
+
+  window.addEventListener('resize', recompute);
+  window.addEventListener('load', recompute);
+  recompute();
+
+  function update() {
+    sunCursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+
+    for (const t of targets) {
+      const dx = t.cx - mouseX;
+      const dy = t.cy - mouseY;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+
+      if (!hasMouse || dist < 1) {
+        if (t.kind !== 'box')  t.el.style.textShadow = '';
+        if (t.kind !== 'text') t.el.style.boxShadow  = '';
+        continue;
+      }
+
+      const nx = dx / dist;
+      const ny = dy / dist;
+      const proximity = Math.max(0, 1 - dist / 800); // 0..1
+
+      if (t.kind === 'text' || t.kind === 'both') {
+        const len   = 3 + proximity * 24;
+        const blur  = 4 + proximity * 18;
+        const alpha = 0.18 + proximity * 0.5;
+        t.el.style.textShadow =
+          `${(nx*len).toFixed(2)}px ${(ny*len).toFixed(2)}px ${blur.toFixed(2)}px rgba(10,6,2,${alpha.toFixed(3)})`;
+      }
+      if (t.kind === 'box' || t.kind === 'both') {
+        const len   = 2 + proximity * 18;
+        const blur  = 8 + proximity * 22;
+        const alpha = 0.12 + proximity * 0.4;
+        t.el.style.boxShadow =
+          `${(nx*len).toFixed(2)}px ${(ny*len).toFixed(2)}px ${blur.toFixed(2)}px rgba(8,4,2,${alpha.toFixed(3)})`;
+      }
+    }
+    requestAnimationFrame(update);
+  }
+  update();
+})();
+</script>
+
+</body>
+</html>
