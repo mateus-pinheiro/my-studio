@@ -188,7 +188,34 @@ body[data-bg="solid"] .fx{ background:none; }
   transition:border-color .25s, color .25s, background .25s, transform .25s; }
 .seal:hover{ border-color:var(--accent); color:#fff; background:var(--panel-2); transform:translateY(-2px); }
 
-/* ---------- contratos · paths ---------- */
+/* ---------- 2 · COMO PENSAMOS ---------- */
+.steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:clamp(40px,6vh,60px); }
+.step{ position:relative; border:1px solid var(--line); border-radius:12px; background:var(--panel);
+  padding:24px 22px 26px; min-height:176px; display:flex; flex-direction:column;
+  transition:border-color .25s, background .25s, transform .25s; }
+.step:hover{ border-color:var(--accent); background:var(--panel-2); transform:translateY(-3px); }
+.step .n{ font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--accent); }
+.step .arrow{ position:absolute; right:-12px; top:50%; transform:translateY(-50%); color:var(--accent); font-size:16px; opacity:.55; z-index:2; }
+.step .txt{ font-family:var(--display); font-weight:450; font-size:clamp(17px,1.7vw,20px); line-height:1.25; letter-spacing:-.015em;
+  color:var(--on); margin-top:auto; text-wrap:pretty; }
+.pull{ margin-top:clamp(40px,6vh,60px); border-left:2px solid var(--accent); padding:6px 0 6px clamp(20px,3vw,32px); }
+.pull p{ font-family:var(--display); font-weight:430; font-size:clamp(21px,2.6vw,32px); line-height:1.26; letter-spacing:-.025em;
+  color:var(--on); margin:0; max-width:32ch; text-wrap:pretty; }
+.pull b{ color:var(--accent); font-weight:550; }
+
+/* ---------- 3 · COMO TRABALHAMOS ---------- */
+.models{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:clamp(40px,6vh,60px); }
+.model{ border:1px solid var(--line); border-radius:13px; background:var(--panel);
+  padding:26px 24px 28px; display:flex; flex-direction:column; gap:13px; position:relative; overflow:hidden;
+  transition:border-color .25s, background .25s, transform .25s; }
+.model::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--accent); opacity:0; transition:opacity .25s; }
+.model:hover{ border-color:var(--accent); background:var(--panel-2); transform:translateY(-3px); }
+.model:hover::before{ opacity:1; }
+.model .mk{ font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--on-mute); }
+.model .mh{ font-family:var(--display); font-weight:500; font-size:clamp(19px,2vw,24px); letter-spacing:-.02em; color:var(--on); line-height:1.12; }
+.model .md{ color:var(--on-soft); font-size:15.5px; line-height:1.5; text-wrap:pretty; }
+
+/* ---------- 4 · CONTRATOS · paths ---------- */
 .paths{ display:flex; flex-direction:column; gap:12px; margin-top:clamp(40px,6vh,56px); }
 .path{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:clamp(14px,3vw,34px);
   border:1px solid var(--line); border-radius:12px; background:var(--panel);
@@ -243,11 +270,16 @@ html.js .reveal.in{ opacity:1; transform:none; }
 /* ---------- responsive ---------- */
 @media (max-width:900px){
   .trust-grid{ grid-template-columns:1fr; gap:34px; }
+  .steps{ grid-template-columns:repeat(2,1fr); }
+  .step .arrow{ display:none; }
+  .models{ grid-template-columns:repeat(2,1fr); }
 }
 @media (max-width:640px){
   .center{ padding:120px 0 30px; }
   .statement{ max-width:none; }
   .seals{ grid-template-columns:repeat(2,1fr); }
+  .steps{ grid-template-columns:1fr; }
+  .models{ grid-template-columns:1fr; }
   .path{ grid-template-columns:1fr; gap:8px; padding:22px 22px; }
   .path .mid{ justify-content:flex-start; transform:rotate(90deg); width:22px; }
   .foot{ flex-direction:column; align-items:flex-start; gap:6px; }
@@ -308,7 +340,7 @@ html.js .reveal.in{ opacity:1; transform:none; }
       <div>
         <div class="sec-eyebrow reveal"><span class="no">01</span><span class="pt">Trajetória &amp; confiança</span><span class="en">Track record &amp; trust</span></div>
         <h2 class="sec-h reveal"><span class="pt">Engenharia de sistemas pensada no <em>seu negócio</em>.</span><span class="en">Systems engineering designed around <em>your business</em>.</span></h2>
-        <p class="sec-lead reveal"><span class="pt">Quase dez anos construindo software conforme a necessidade do cliente, desde projetos mais simples até ambientes com alta exigência. Experiência em diversos setores da economia: financeiro, cripto, alimentício, agronegócio, estudantil, atendimento ao cliente, streaming entre outros.</span><span class="en">Nearly ten years building software shaped to each client's needs — from simpler projects to high-demand environments. Experience across many sectors of the economy: finance, crypto, food, agribusiness, education, customer service, streaming and more.</span></p>
+        <p class="sec-lead reveal"><span class="pt">Quase dez anos construindo software conforme a necessidade do cliente, desde projetos mais simples até ambientes com alta exigência. Experiência em diversos setores da economia: financeiro, cripto, alimentício, agronegócio, estudantil, atendimento ao cliente, streaming entre outros.</span><span class="en">Nearly ten years building software shaped to each client's needs, from simpler projects to high-demand environments. Experience across many sectors of the economy: finance, crypto, food, agribusiness, education, customer service, streaming and more.</span></p>
       </div>
 
       <div class="stats reveal">
@@ -341,11 +373,78 @@ html.js .reveal.in{ opacity:1; transform:none; }
     </div>
   </section>
 
-  <!-- ============ 2 · CONTRATOS PERSONALIZÁVEIS ============ -->
+  <!-- ============ 2 · COMO PENSAMOS ============ -->
+  <section class="sec" id="pensamos">
+    <div class="sec-eyebrow reveal"><span class="no">02</span><span class="pt">Como pensamos</span><span class="en">How we think</span></div>
+    <h2 class="sec-h reveal"><span class="pt">A arquitetura certa começa por <em>entender o problema real</em>.</span><span class="en">The right architecture starts by <em>understanding the real problem</em>.</span></h2>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="n">01</div>
+        <div class="txt"><span class="pt">Entender o domínio e a necessidade real</span><span class="en">Understand the domain and the real need</span></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="step reveal">
+        <div class="n">02</div>
+        <div class="txt"><span class="pt">Mapear requisitos, riscos e restrições</span><span class="en">Map requirements, risks and constraints</span></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="step reveal">
+        <div class="n">03</div>
+        <div class="txt"><span class="pt">Definir arquitetura e trade-offs</span><span class="en">Define architecture and trade-offs</span></div>
+        <div class="arrow">→</div>
+      </div>
+      <div class="step reveal">
+        <div class="n">04</div>
+        <div class="txt"><span class="pt">Entregar em ciclos curtos e medíveis</span><span class="en">Ship in short, measurable cycles</span></div>
+      </div>
+    </div>
+
+    <div class="pull reveal">
+      <p><span class="pt">Tecnologia é meio, não fim. <b>Escolhemos a stack certa para o problema</b>, não a da moda, e conhecemos o usuário final de verdade.</span><span class="en">Technology is a means, not an end. <b>We pick the right stack for the problem</b>, not the trendy one, and we truly know the end user.</span></p>
+    </div>
+  </section>
+
+  <!-- ============ 3 · COMO TRABALHAMOS ============ -->
+  <section class="sec" id="trabalhamos">
+    <div class="sec-eyebrow reveal"><span class="no">03</span><span class="pt">Como trabalhamos</span><span class="en">How we work</span></div>
+    <h2 class="sec-h reveal"><span class="pt">Formatos de engajamento <em>flexíveis</em>.</span><span class="en"><em>Flexible</em> engagement formats.</span></h2>
+    <p class="sec-lead reveal"><span class="pt">Cada cliente entra pelo modelo que faz sentido para o momento. Sem fórmula única.</span><span class="en">Each client starts with the model that fits the moment. No one-size-fits-all.</span></p>
+
+    <div class="models">
+      <div class="model reveal">
+        <div class="mk">01</div>
+        <div class="mh"><span class="pt">Escopo fechado</span><span class="en">Fixed scope</span></div>
+        <div class="md"><span class="pt">Projeto estimado e entregue por valor fixo.</span><span class="en">Project estimated and delivered for a fixed price.</span></div>
+      </div>
+      <div class="model reveal">
+        <div class="mk">02</div>
+        <div class="mh"><span class="pt">Escopo aberto</span><span class="en">Open scope</span></div>
+        <div class="md"><span class="pt">Alocação dinâmica de profissionais por mês.</span><span class="en">Dynamic monthly allocation of specialists.</span></div>
+      </div>
+      <div class="model reveal">
+        <div class="mk">03</div>
+        <div class="mh"><span class="pt">Consultoria por período fixo</span><span class="en">Fixed-term consulting</span></div>
+        <div class="md"><span class="pt">Atuação sênior junto ao time do cliente.</span><span class="en">Senior work alongside the client's team.</span></div>
+      </div>
+      <div class="model reveal">
+        <div class="mk">04</div>
+        <div class="mh"><span class="pt">Retainer mensal</span><span class="en">Monthly retainer</span></div>
+        <div class="md"><span class="pt">Um sênior à disposição, com horas incluídas.</span><span class="en">A senior on call, with hours included.</span></div>
+      </div>
+      <div class="model reveal">
+        <div class="mk">05</div>
+        <div class="mh"><span class="pt">Alocação de time</span><span class="en">Team allocation</span></div>
+        <div class="md"><span class="pt">Time dedicado dentro da operação do cliente.</span><span class="en">A dedicated team inside the client's operation.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4 · CONTRATOS PERSONALIZÁVEIS ============ -->
   <section class="sec" id="contratos">
-    <div class="sec-eyebrow reveal"><span class="no">02</span><span class="pt">Contratos personalizáveis</span><span class="en">Customizable contracts</span></div>
+    <div class="sec-eyebrow reveal"><span class="no">04</span><span class="pt">Contratos personalizáveis</span><span class="en">Customizable contracts</span></div>
     <h2 class="sec-h reveal"><span class="pt">Os modelos <em>se conectam</em>.</span><span class="en">The models <em>connect</em>.</span></h2>
-    <p class="sec-lead reveal"><span class="pt">Vivemos em um mundo em constante mudança — não é o seu contrato com a área de engenharia de software que não vai mudar. Adaptamos o contrato conforme a necessidade atual.</span><span class="en">We live in a constantly changing world — your contract with software engineering won't be the exception. We adapt the contract to your current needs.</span></p>
+    <p class="sec-lead reveal"><span class="pt">Vivemos em um mundo em constante mudança, não é o seu contrato com a área de engenharia de software que não vai mudar. Adaptamos o contrato conforme a necessidade atual.</span><span class="en">We live in a constantly changing world, and your contract with software engineering won't be the exception. We adapt the contract to your current needs.</span></p>
 
     <div class="paths">
       <div class="path reveal">
@@ -367,13 +466,13 @@ html.js .reveal.in{ opacity:1; transform:none; }
 
     <div class="paths-note reveal">
       <span class="mk">↳</span>
-      <p><span class="pt">O trabalho não termina na entrega — <b>acompanha o ciclo de vida do produto.</b></span><span class="en">The work doesn't end at delivery — <b>it follows the product's life cycle.</b></span></p>
+      <p><span class="pt">O trabalho não termina na entrega, <b>acompanha o ciclo de vida do produto.</b></span><span class="en">The work doesn't end at delivery, <b>it follows the product's life cycle.</b></span></p>
     </div>
   </section>
 
-  <!-- ============ 3 · CONTATO ============ -->
+  <!-- ============ 5 · CONTATO ============ -->
   <section class="sec contact" id="contato">
-    <div class="sec-eyebrow reveal"><span class="no">03</span><span class="pt">Contato</span><span class="en">Contact</span></div>
+    <div class="sec-eyebrow reveal"><span class="no">05</span><span class="pt">Contato</span><span class="en">Contact</span></div>
     <h2 class="contact-h reveal"><span class="pt">Sistemas construídos por quem já <em>entregou em produção de verdade</em>.</span><span class="en">Systems built by someone who has <em>shipped to real production</em>.</span></h2>
 
     <nav class="links reveal">
