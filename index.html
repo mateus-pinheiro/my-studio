@@ -286,6 +286,13 @@ body[data-bg="solid"] .fx{ background:none; }
    the contact's top edge all the way to the bottom of the page. */
 .closing{ position:relative; }
 .closing > .foot{ position:relative; z-index:1; }
+/* full-bleed divider at the top of this block, running edge-to-edge over the photo.
+   Replaces the contact section's own content-width border-top / accent line. */
+.closing > .contact{ border-top:0; }
+.closing > .contact::before{ display:none; }
+.closing::before{ content:""; position:absolute; top:0; left:50%; width:100vw; transform:translateX(-50%);
+  height:1px; z-index:1; pointer-events:none;
+  background:linear-gradient(90deg, var(--accent-line), transparent 55%), var(--line); }
 /* full-bleed: image breaks out of .wrap to fill the whole block edge-to-edge.
    No overflow:hidden here, or it would clip the image back to the content width.
    Horizontal overflow from the 100vw bleed is contained by overflow-x on <body>. */
