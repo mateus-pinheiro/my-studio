@@ -20,7 +20,7 @@
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Logotipo // — mateus-pinheiro, Software Studio">
+<meta property="og:image:alt" content="Logotipo //">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mateus Pinheiro — Software Studio">
@@ -211,9 +211,9 @@ body[data-bg="solid"] .fx{ background:none; }
 .seal:hover{ border-color:var(--accent); color:#fff; background:var(--panel-2); transform:translateY(-2px); }
 
 /* ---------- 2 · COMO PENSAMOS ---------- */
-.steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:clamp(40px,6vh,60px); }
+.steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:clamp(40px,6vh,60px); }
 .step{ position:relative; border:1px solid var(--line); border-radius:12px; background:var(--panel);
-  padding:24px 22px 26px; min-height:176px; display:flex; flex-direction:column;
+  padding:22px 20px 24px; min-height:176px; display:flex; flex-direction:column;
   transition:border-color .25s, background .25s, transform .25s; }
 .step:hover{ border-color:var(--accent); background:var(--panel-2); transform:translateY(-3px); }
 .step .n{ font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--accent); }
@@ -229,6 +229,7 @@ body[data-bg="solid"] .fx{ background:none; }
 .models{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:clamp(40px,6vh,60px); }
 .model{ border:1px solid var(--line); border-radius:13px; background:var(--panel);
   padding:26px 24px 28px; display:flex; flex-direction:column; gap:13px; position:relative; overflow:hidden;
+  text-decoration:none; color:inherit;
   transition:border-color .25s, background .25s, transform .25s; }
 .model::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--accent); opacity:0; transition:opacity .25s; }
 .model:hover{ border-color:var(--accent); background:var(--panel-2); transform:translateY(-3px); }
@@ -236,6 +237,10 @@ body[data-bg="solid"] .fx{ background:none; }
 .model .mk{ font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--on-mute); }
 .model .mh{ font-family:var(--display); font-weight:500; font-size:clamp(19px,2vw,24px); letter-spacing:-.02em; color:var(--on); line-height:1.12; }
 .model .md{ color:var(--on-soft); font-size:15.5px; line-height:1.5; text-wrap:pretty; }
+.model .mcta{ margin-top:auto; padding-top:4px; font-family:var(--mono); font-size:11px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--accent); display:inline-flex; align-items:center; gap:7px; }
+.model .mcta .arr{ transition:transform .2s; }
+.model:hover .mcta .arr{ transform:translateX(4px); }
 
 /* ---------- 4 · CONTRATOS · paths ---------- */
 .paths{ display:flex; flex-direction:column; gap:12px; margin-top:clamp(40px,6vh,56px); }
@@ -275,9 +280,18 @@ body[data-bg="solid"] .fx{ background:none; }
   100%{ box-shadow:0 8px 24px rgba(0,0,0,.35), 0 0 0 0 rgba(37,211,102,0); } }
 @media (prefers-reduced-motion: reduce){ .wa-fab{ animation:none; } }
 
-/* ---------- closing shot ---------- */
-.shot{ margin:clamp(48px,9vh,104px) 0 0; }
-.shot img{ width:100%; height:auto; display:block; border-radius:16px; border:1px solid var(--line); }
+/* ---------- contato · foto de fundo ---------- */
+.contact{ overflow:hidden; }
+/* full-bleed: image breaks out of .wrap to fill the whole section edge-to-edge */
+.shot-bg{ position:absolute; top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%);
+  z-index:0; pointer-events:none; }
+.shot-bg::before{ content:""; position:absolute; inset:0;
+  background:url("assets/studio.jpg") center/cover no-repeat; opacity:.34; }
+.shot-bg::after{ content:""; position:absolute; inset:0;
+  background:linear-gradient(95deg, var(--ink) 4%, color-mix(in srgb, var(--ink) 42%, transparent) 55%, color-mix(in srgb, var(--ink) 6%, transparent) 100%); }
+.contact > .sec-eyebrow,
+.contact > .contact-h,
+.contact > .links{ position:relative; z-index:1; }
 
 /* ---------- footer ---------- */
 .foot{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
@@ -304,7 +318,9 @@ html.js .reveal.in{ opacity:1; transform:none; }
   .center{ padding:120px 0 30px; }
   .statement{ max-width:none; }
   .seals{ grid-template-columns:repeat(2,1fr); }
-  .steps{ grid-template-columns:1fr; }
+  .steps{ grid-template-columns:1fr; gap:10px; }
+  .step{ padding:16px 18px; min-height:0; }
+  .step .txt{ margin-top:8px; }
   .models{ grid-template-columns:1fr; }
   .path{ grid-template-columns:1fr; gap:8px; padding:22px 22px; }
   .path .mid{ justify-content:flex-start; transform:rotate(90deg); width:22px; }
@@ -438,31 +454,36 @@ html.js .reveal.in{ opacity:1; transform:none; }
     <p class="sec-lead reveal"><span class="pt">Cada cliente entra pelo modelo que faz sentido para o momento. Sem fórmula única.</span><span class="en">Each client starts with the model that fits the moment. No one-size-fits-all.</span></p>
 
     <div class="models">
-      <div class="model reveal">
+      <a class="model reveal" href="formatos/escopo-fechado.html">
         <div class="mk">01</div>
         <div class="mh"><span class="pt">Escopo fechado</span><span class="en">Fixed scope</span></div>
         <div class="md"><span class="pt">Projeto estimado e entregue por valor fixo.</span><span class="en">Project estimated and delivered for a fixed price.</span></div>
-      </div>
-      <div class="model reveal">
+        <span class="mcta"><span class="pt">Ver detalhes</span><span class="en">View details</span><span class="arr">→</span></span>
+      </a>
+      <a class="model reveal" href="formatos/escopo-aberto.html">
         <div class="mk">02</div>
         <div class="mh"><span class="pt">Escopo aberto</span><span class="en">Open scope</span></div>
         <div class="md"><span class="pt">Alocação dinâmica de profissionais por mês.</span><span class="en">Dynamic monthly allocation of specialists.</span></div>
-      </div>
-      <div class="model reveal">
+        <span class="mcta"><span class="pt">Ver detalhes</span><span class="en">View details</span><span class="arr">→</span></span>
+      </a>
+      <a class="model reveal" href="formatos/consultoria.html">
         <div class="mk">03</div>
         <div class="mh"><span class="pt">Consultoria por período fixo</span><span class="en">Fixed-term consulting</span></div>
         <div class="md"><span class="pt">Atuação sênior junto ao time do cliente.</span><span class="en">Senior work alongside the client's team.</span></div>
-      </div>
-      <div class="model reveal">
+        <span class="mcta"><span class="pt">Ver detalhes</span><span class="en">View details</span><span class="arr">→</span></span>
+      </a>
+      <a class="model reveal" href="formatos/retainer-mensal.html">
         <div class="mk">04</div>
         <div class="mh"><span class="pt">Retainer mensal</span><span class="en">Monthly retainer</span></div>
         <div class="md"><span class="pt">Um sênior à disposição, com horas incluídas.</span><span class="en">A senior on call, with hours included.</span></div>
-      </div>
-      <div class="model reveal">
+        <span class="mcta"><span class="pt">Ver detalhes</span><span class="en">View details</span><span class="arr">→</span></span>
+      </a>
+      <a class="model reveal" href="formatos/alocacao-de-time.html">
         <div class="mk">05</div>
         <div class="mh"><span class="pt">Alocação de time</span><span class="en">Team allocation</span></div>
         <div class="md"><span class="pt">Time dedicado dentro da operação do cliente.</span><span class="en">A dedicated team inside the client's operation.</span></div>
-      </div>
+        <span class="mcta"><span class="pt">Ver detalhes</span><span class="en">View details</span><span class="arr">→</span></span>
+      </a>
     </div>
   </section>
 
@@ -498,6 +519,7 @@ html.js .reveal.in{ opacity:1; transform:none; }
 
   <!-- ============ 5 · CONTATO ============ -->
   <section class="sec contact" id="contato">
+    <div class="shot-bg" aria-hidden="true"></div>
     <div class="sec-eyebrow reveal"><span class="no">05</span><span class="pt">Contato</span><span class="en">Contact</span></div>
     <h2 class="contact-h reveal"><span class="pt">Sistemas construídos por quem já <em>entregou em produção de verdade</em>.</span><span class="en">Systems built by someone who has <em>shipped to real production</em>.</span></h2>
 
@@ -513,10 +535,6 @@ html.js .reveal.in{ opacity:1; transform:none; }
       </a>
     </nav>
   </section>
-
-  <figure class="shot reveal">
-    <img src="assets/studio.jpg" alt="Mateus França Pinheiro programando em um notebook" loading="lazy" width="1800" height="1609">
-  </figure>
 
   <footer class="foot">
     <div><span class="pt">10+ anos construindo</span><span class="en">10+ years building</span> <span class="dot">/</span> <span class="pt">desde 2013</span><span class="en">since 2013</span></div>
