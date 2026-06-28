@@ -89,6 +89,7 @@ body{
   font-family:var(--body); font-weight:350; font-size:17px; line-height:1.6;
   -webkit-font-smoothing:antialiased; letter-spacing:-.005em;
   background:var(--ink);
+  overflow-x:hidden;
 }
 body.lang-pt .en{ display:none !important; }
 body.lang-en .pt{ display:none !important; }
@@ -281,8 +282,9 @@ body[data-bg="solid"] .fx{ background:none; }
 @media (prefers-reduced-motion: reduce){ .wa-fab{ animation:none; } }
 
 /* ---------- contato · foto de fundo ---------- */
-.contact{ overflow:hidden; }
-/* full-bleed: image breaks out of .wrap to fill the whole section edge-to-edge */
+/* full-bleed: image breaks out of .wrap to fill the whole section edge-to-edge.
+   No overflow:hidden here, or it would clip the image back to the content width.
+   Horizontal overflow from the 100vw bleed is contained by overflow-x on <body>. */
 .shot-bg{ position:absolute; top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%);
   z-index:0; pointer-events:none; }
 .shot-bg::before{ content:""; position:absolute; inset:0;
