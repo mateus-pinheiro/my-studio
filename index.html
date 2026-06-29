@@ -607,26 +607,26 @@ html:active-view-transition-type(back)::view-transition-new(root){ animation-nam
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
   // Directional cross-document view transitions (progressive enhancement).
-  // "Forward" = going deeper (into a format page); "back" = returning home.
   (function(){
     function isHome(url){
       try{ const p = new URL(url, location.href).pathname; return p === '/' || p.endsWith('/index.html'); }
       catch(e){ return false; }
     }
-    function classify(fromUrl, toUrl){
-      return (isHome(toUrl) && !isHome(fromUrl)) ? 'back' : 'forward';
+    function dirFor(act){
+      if(act && act.from && act.entry){
+        const fi = act.from.index, ti = act.entry.index;
+        if(typeof fi === 'number' && typeof ti === 'number' && fi !== ti) return ti < fi ? 'back' : 'forward';
+        if(act.from.url && act.entry.url) return (isHome(act.entry.url) && !isHome(act.from.url)) ? 'back' : 'forward';
+      }
+      return 'forward';
     }
     window.addEventListener('pageswap', function(e){
-      if(!e.viewTransition || !e.activation) return;
-      const from = e.activation.from && e.activation.from.url;
-      const to = e.activation.entry && e.activation.entry.url;
-      if(from && to) e.viewTransition.types.add(classify(from, to));
+      if(e.viewTransition && e.activation) e.viewTransition.types.add(dirFor(e.activation));
     });
     window.addEventListener('pagereveal', function(e){
       if(!e.viewTransition) return;
       document.documentElement.classList.add('vt-in');
-      const nav = (window.navigation && navigation.activation) || null;
-      if(nav && nav.from && nav.entry) e.viewTransition.types.add(classify(nav.from.url, nav.entry.url));
+      if(window.navigation && navigation.activation) e.viewTransition.types.add(dirFor(navigation.activation));
     });
   })();
 </script>

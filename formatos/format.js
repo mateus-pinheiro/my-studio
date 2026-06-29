@@ -20,27 +20,44 @@ const io = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 // Directional cross-document view transitions (progressive enhancement).
-// "Forward" = going deeper (into a format page); "back" = returning home.
 (function(){
   function isHome(url){
     try { const p = new URL(url, location.href).pathname; return p === '/' || p.endsWith('/index.html'); }
     catch(e){ return false; }
   }
-  function classify(fromUrl, toUrl){
-    return (isHome(toUrl) && !isHome(fromUrl)) ? 'back' : 'forward';
+  // Prefer the history-entry index (robust for both push and traverse);
+  // fall back to a home-vs-deeper heuristic when indices aren't available.
+  function dirFor(act){
+    if (act && act.from && act.entry){
+      const fi = act.from.index, ti = act.entry.index;
+      if (typeof fi === 'number' && typeof ti === 'number' && fi !== ti) return ti < fi ? 'back' : 'forward';
+      if (act.from.url && act.entry.url) return (isHome(act.entry.url) && !isHome(act.from.url)) ? 'back' : 'forward';
+    }
+    return 'forward';
   }
-  // Leaving this page: tag the outgoing transition with its direction.
   window.addEventListener('pageswap', function(e){
-    if (!e.viewTransition || !e.activation) return;
-    const from = e.activation.from && e.activation.from.url;
-    const to = e.activation.entry && e.activation.entry.url;
-    if (from && to) e.viewTransition.types.add(classify(from, to));
+    if (e.viewTransition && e.activation) e.viewTransition.types.add(dirFor(e.activation));
   });
-  // Arriving on this page: tag direction and keep content visible during the slide.
   window.addEventListener('pagereveal', function(e){
     if (!e.viewTransition) return;
     document.documentElement.classList.add('vt-in');
-    const nav = (window.navigation && navigation.activation) || null;
-    if (nav && nav.from && nav.entry) e.viewTransition.types.add(classify(nav.from.url, nav.entry.url));
+    if (window.navigation && navigation.activation) e.viewTransition.types.add(dirFor(navigation.activation));
+  });
+})();
+
+// Back rail: traverse history instead of loading a fresh page, so we return to
+// the exact section/scroll we came from — and reuse bfcache for an instant,
+// delay-free reverse transition. Falls back to the href on a direct entry.
+(function(){
+  const rail = document.querySelector('.back-rail');
+  if (!rail || !window.navigation) return;
+  rail.addEventListener('click', function(ev){
+    if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    if (!navigation.canGoBack) return;                 // direct load → let the href handle it
+    const prev = navigation.entries()[navigation.currentEntry.index - 1];
+    if (!prev) return;
+    try { if (new URL(prev.url).origin !== location.origin) return; } catch(e){ return; }
+    ev.preventDefault();
+    navigation.back();
   });
 })();
