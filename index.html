@@ -319,6 +319,25 @@ html.js .reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s c
 html.js .reveal.in{ opacity:1; transform:none; }
 @media (prefers-reduced-motion: reduce){ html.js .reveal{ opacity:1; transform:none; transition:none; } }
 @media print{ .reveal{ opacity:1 !important; transform:none !important; } }
+/* when sliding in via a page transition, show content immediately (no blank slide) */
+html.vt-in .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+
+/* ---------- cross-document page transitions (progressive enhancement) ---------- */
+@view-transition { navigation: auto; }
+/* keep fixed chrome anchored; only the page content slides */
+.topbar{ view-transition-name: ui-topbar; }
+.wa-fab{ view-transition-name: ui-wa; }
+::view-transition-old(root){ animation:.45s cubic-bezier(.2,.7,.2,1) both vt-out-left; }
+::view-transition-new(root){ animation:.45s cubic-bezier(.2,.7,.2,1) both vt-in-right; }
+html:active-view-transition-type(back)::view-transition-old(root){ animation-name: vt-out-right; }
+html:active-view-transition-type(back)::view-transition-new(root){ animation-name: vt-in-left; }
+@keyframes vt-in-right { from{ transform:translateX(100%); } to{ transform:translateX(0); } }
+@keyframes vt-out-left { from{ transform:translateX(0); } to{ transform:translateX(-100%); } }
+@keyframes vt-in-left  { from{ transform:translateX(-100%); } to{ transform:translateX(0); } }
+@keyframes vt-out-right{ from{ transform:translateX(0); } to{ transform:translateX(100%); } }
+@media (prefers-reduced-motion: reduce){
+  ::view-transition-old(root), ::view-transition-new(root){ animation:none; }
+}
 
 /* ---------- responsive ---------- */
 @media (max-width:900px){
@@ -586,6 +605,30 @@ html.js .reveal.in{ opacity:1; transform:none; }
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { rootMargin:'0px 0px -8% 0px', threshold:0.08 });
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Directional cross-document view transitions (progressive enhancement).
+  // "Forward" = going deeper (into a format page); "back" = returning home.
+  (function(){
+    function isHome(url){
+      try{ const p = new URL(url, location.href).pathname; return p === '/' || p.endsWith('/index.html'); }
+      catch(e){ return false; }
+    }
+    function classify(fromUrl, toUrl){
+      return (isHome(toUrl) && !isHome(fromUrl)) ? 'back' : 'forward';
+    }
+    window.addEventListener('pageswap', function(e){
+      if(!e.viewTransition || !e.activation) return;
+      const from = e.activation.from && e.activation.from.url;
+      const to = e.activation.entry && e.activation.entry.url;
+      if(from && to) e.viewTransition.types.add(classify(from, to));
+    });
+    window.addEventListener('pagereveal', function(e){
+      if(!e.viewTransition) return;
+      document.documentElement.classList.add('vt-in');
+      const nav = (window.navigation && navigation.activation) || null;
+      if(nav && nav.from && nav.entry) e.viewTransition.types.add(classify(nav.from.url, nav.entry.url));
+    });
+  })();
 </script>
 
 <script type="text/babel" data-presets="env,react">
